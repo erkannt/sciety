@@ -27,11 +27,11 @@ COPY .eslintignore \
   tsconfig.json \
   tsconfig.dev.json \
   ./
-COPY test/ test/
-COPY src/ src/
 COPY static/ static/
 COPY scripts/ scripts/
 COPY data/ data/
+COPY test/ test/
+COPY src/ src/
 
 
 #
