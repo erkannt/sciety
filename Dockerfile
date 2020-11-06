@@ -10,21 +10,14 @@ COPY .npmrc \
 
 
 #
-# Stage: Development NPM install
+# Stage: npm-dependencies and source
 #
-FROM node AS npm-dev
+FROM node as base
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+RUN npm ci --production
+RUN mv node_modules prod_node_modules
 
 RUN npm ci
-
-
-
-#
-# Stage: Development environment
-#
-FROM node AS dev
-ENV NODE_ENV=development
-ENV PRETTY_LOG=true
 
 COPY .eslintignore \
   .eslintrc.js \
@@ -34,34 +27,30 @@ COPY .eslintignore \
   tsconfig.json \
   tsconfig.dev.json \
   ./
-COPY --from=npm-dev /app/ .
 COPY test/ test/
 COPY src/ src/
 COPY static/ static/
 COPY scripts/ scripts/
 COPY data/ data/
 
-CMD ["npm", "run", "start:dev"]
 
+#
+# Stage: Development environment
+#
+FROM base AS dev
+ENV NODE_ENV=development
+ENV PRETTY_LOG=true
+
+CMD ["npm", "run", "start:dev"]
 
 
 #
 # Stage: Production build
 #
-FROM dev AS build-prod
+FROM base AS build-prod
 ENV NODE_ENV=production
 
 RUN npm run build
-
-
-
-#
-# Stage: Production NPM install
-#
-FROM node AS npm-prod
-
-RUN npm ci --production
-
 
 
 #
@@ -70,7 +59,7 @@ RUN npm ci --production
 FROM node AS prod
 ENV NODE_ENV=production
 
-COPY --from=npm-prod /app/ .
+COPY --from=base /app/prod_node_modules ./node_modules
 COPY --from=build-prod /app/build/ build/
 COPY --from=build-prod /app/static/ static/
 COPY data/ data/
