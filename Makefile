@@ -45,13 +45,12 @@ backstop: node_modules
 	npx backstop --docker test > /tmp/backstop_test.log
 
 build: build\:intermediate
-	docker build --cache-from=node --cache-from=base --target=${TARGET} -t ${IMAGE}:${IMAGE_TAG} ./
+	docker build --cache-from=base --target=${TARGET} -t ${IMAGE}:${IMAGE_TAG} ./
 
 build\:dev: build\:intermediate
 	docker build --cache-from=base --target=${TARGET} -t ${IMAGE}:${IMAGE_TAG}-dev ./
 
 build\:intermediate:
-	docker build --target node -t node ./
 	docker build --target base -t base ./
 
 install: node_modules
