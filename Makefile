@@ -11,10 +11,10 @@ PORT := 8080
 export IMAGE
 export IMAGE_TAG
 
-.PHONY: backstop build clean* dev find-* install lint* prod release test* update-event-data
+.PHONY: backstop build* clean* dev find-* install lint* prod release test* update-event-data
 
 dev: export TARGET = dev
-dev: .env install build
+dev: .env install build\:dev
 	${DOCKER_COMPOSE} up --abort-on-container-exit --exit-code-from app
 
 prod: export TARGET = prod
@@ -25,27 +25,34 @@ prod: .env build
 	cp .env.example .env
 
 lint: export TARGET = dev
-lint: build
+lint: build\:dev
 	${DOCKER_COMPOSE} run --rm app npm run lint
 
 lint\:fix: export TARGET = dev
-lint\:fix: build
+lint\:fix: build\:dev
 	${DOCKER_COMPOSE} run --rm -e ESLINT=--fix -e STYLELINT=--fix app npm run lint
 
 test: export TARGET = dev
-test: build
+test: build\:dev
 	${DOCKER_COMPOSE} run --rm app npm run test
 
 test\:coverage: export TARGET = dev
-test\:coverage: build
+test\:coverage: build\:dev
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
 backstop: node_modules
 	npx backstop --docker reference > /tmp/backstop_reference.log
 	npx backstop --docker test > /tmp/backstop_test.log
 
-build:
-	$(DOCKER_COMPOSE) build app
+build: build\:intermediate
+	docker build --cache-from=node --cache-from=base --target=${TARGET} -t ${IMAGE}:${IMAGE_TAG} ./
+
+build\:dev: build\:intermediate
+	docker build --cache-from=base --target=${TARGET} -t ${IMAGE}:${IMAGE_TAG}-dev ./
+
+build\:intermediate:
+	docker build --target node -t node ./
+	docker build --target base -t base ./
 
 install: node_modules
 
