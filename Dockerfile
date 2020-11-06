@@ -40,6 +40,7 @@ COPY src/ src/
 FROM base AS dev
 ENV NODE_ENV=development
 ENV PRETTY_LOG=true
+RUN rm -r prod_node_modules
 
 CMD ["npm", "run", "start:dev"]
 
