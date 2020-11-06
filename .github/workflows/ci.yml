@@ -19,8 +19,8 @@ jobs:
 
       - name: Build Docker images
         run: |
-          make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
-          make IMAGE_TAG=${IMAGE_TAG} TARGET=dev build
+          make IMAGE_TAG=${IMAGE_TAG} build
+          make IMAGE_TAG=${IMAGE_TAG} build:dev
 
       - name: Lint
         run: |
@@ -38,6 +38,7 @@ jobs:
         run: |
           echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
           docker push sciety/sciety:${IMAGE_TAG}
+          docker push sciety/sciety:base
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
