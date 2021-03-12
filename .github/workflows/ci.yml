@@ -22,7 +22,7 @@ jobs:
 
       - name: Backstop
         run: |
-          git lfs checkout backstop_data/bitmaps_reference/*
+          git lfs pull
           make backstop
 
       - name: Lint
