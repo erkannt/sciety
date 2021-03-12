@@ -23,8 +23,7 @@
   "scenarios": [
     {
       "label": "Homepage (with cookie banner)",
-      "url": "https://staging.sciety.org",
-      "referenceUrl": "https://sciety.org",
+      "url": "http://sciety_app:80",
       "removeSelectors": [
         ".group-list"
       ],
@@ -32,53 +31,44 @@
     },
     {
       "label": "Homepage",
-      "url": "https://staging.sciety.org",
-      "referenceUrl": "https://sciety.org",
+      "url": "http://sciety_app:80",
       "removeSelectors": [
         ".group-list"
       ]
     },
     {
       "label": "An article meta page",
-      "url": "https://staging.sciety.org/articles/meta/10.1101/646810",
-      "referenceUrl": "https://sciety.org/articles/meta/10.1101/646810"
+      "url": "http://sciety_app:80/articles/meta/10.1101/646810"
     },
     {
       "label": "An article activity page",
-      "url": "https://staging.sciety.org/articles/activity/10.1101/646810",
-      "referenceUrl": "https://sciety.org/articles/activity/10.1101/646810"
+      "url": "http://sciety_app:80/articles/activity/10.1101/646810"
     },
     {
       "label": "An article activity page (expanded reviews)",
-      "url": "https://staging.sciety.org/articles/activity/10.1101/646810",
-      "referenceUrl": "https://sciety.org/articles/activity/10.1101/646810",
+      "url": "http://sciety_app:80/articles/activity/10.1101/646810",
       "clickSelector": ".activity-feed__item-toggle"
     },
     {
       "label": "Article search page",
-      "url": "https://staging.sciety.org/articles?query=elephant+shark",
-      "referenceUrl": "https://sciety.org/articles?query=elephant+shark"
+      "url": "http://sciety_app:80/articles?query=elephant+shark"
     },
     {
       "label": "ScietyHQ user page",
-      "url": "https://staging.sciety.org/users/1295307136415735808",
-      "referenceUrl": "https://sciety.org/users/1295307136415735808",
+      "url": "http://sciety_app:80/users/1295307136415735808",
       "removeSelectors": [".saved-articles"]
     },
     {
       "label": "About",
-      "url": "https://staging.sciety.org/about",
-      "referenceUrl": "https://sciety.org/about"
+      "url": "http://sciety_app:80/about"
     },
     {
       "label": "Privacy",
-      "url": "https://staging.sciety.org/privacy",
-      "referenceUrl": "https://sciety.org/privacy"
+      "url": "http://sciety_app:80/privacy"
     },
     {
       "label": "Terms and conditions",
-      "url": "https://staging.sciety.org/terms",
-      "referenceUrl": "https://sciety.org/terms"
+      "url": "http://sciety_app:80/terms"
     }
   ],
   "paths": {
@@ -93,7 +83,7 @@
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
-  "dockerCommandTemplate": "docker run --rm -i --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
+  "dockerCommandTemplate": "docker run --rm -i --network sciety --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 50,
   "debug": false,
