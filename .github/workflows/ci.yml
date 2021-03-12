@@ -23,7 +23,7 @@ jobs:
       - name: Backstop
         run: |
           npm install backstopjs
-          make backstop
+          npx backstop --docker reference
 
       - name: Lint
         run: |
