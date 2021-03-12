@@ -24,6 +24,7 @@ jobs:
         run: |
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install backstopjs
           npx backstop --docker reference
+          npx backstop --docker test
 
       - name: Lint
         run: |

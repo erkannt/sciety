@@ -93,6 +93,7 @@
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
+  "dockerCommandTemplate": "docker run --rm -i --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}",
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 50,
   "debug": false,
