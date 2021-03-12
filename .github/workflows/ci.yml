@@ -9,7 +9,7 @@ on:
 
 
 env:
-  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_TAG: 9cded2c24040edf457bafe2c8764e10abdbcb79d
 
 jobs:
 
@@ -19,11 +19,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Build Docker images
-        run: |
-          make IMAGE_TAG=${IMAGE_TAG} TARGET=prod build
-          make IMAGE_TAG=${IMAGE_TAG} TARGET=dev build
 
       - name: Lint
         run: |
