@@ -43,14 +43,21 @@ test\:coverage: export TARGET = dev
 test\:coverage: build
 	${DOCKER_COMPOSE} run --rm app npm run test:coverage
 
-backstop: node_modules
-	npx backstop --docker reference > /tmp/backstop_reference.log
-	npx backstop --docker test > /tmp/backstop_test.log
+backstop: export TARGET = prod
+backstop: install build clean-db
+	.github/visual-regression.sh
+
+backstop-approve: install
+	npx backstop approve
+
+backstop-report: install
+	npx backstop openReport
 
 build:
 	$(DOCKER_COMPOSE) build app
 
 install: node_modules
+	-docker network create sciety
 
 node_modules: export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = true
 node_modules: package.json package-lock.json
